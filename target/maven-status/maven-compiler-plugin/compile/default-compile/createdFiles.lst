@@ -1,0 +1,5 @@
+com\aidetector\service\DetectionService.class
+com\aidetector\model\PredictionResult.class
+com\aidetector\controller\DetectionController.class
+com\aidetector\model\TextRequest.class
+com\aidetector\AiDetectorApplication.class

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Hate Speech Detector</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#121212;
+    color:white;
+    text-align:center;
+    margin-top:100px;
+}
+
+textarea{
+    width:450px;
+    height:120px;
+    font-size:16px;
+    padding:10px;
+}
+
+#result{
+    margin-top:20px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.normal{ color:#00e676; }
+.offensive{ color:#ffca28; }
+.hate{ color:#ff5252; }
+
+</style>
+
+</head>
+
+<body>
+
+<h1>AI Hate Speech Detector</h1>
+
+<textarea id="textInput" placeholder="Type something..."></textarea>
+
+<div id="result">Start typing...</div>
+
+<script>
+
+const input = document.getElementById("textInput");
+
+input.addEventListener("input", detect);
+
+async function detect(){
+
+    let text = input.value;
+
+    if(text.length < 2){
+        document.getElementById("result").innerText = "Typing...";
+        return;
+    }
+
+    try{
+
+        let response = await fetch(
+            "http://127.0.0.1:8000/predict?text=" + encodeURIComponent(text)
+        );
+
+        let data = await response.json();
+
+        document.getElementById("result").innerText =
+    "Prediction: " + data.prediction + " (" + data.confidence + "%)";
+
+    }catch(err){
+
+        document.getElementById("result").innerText =
+            "Server error. Is FastAPI running?";
+    }
+}
+
+</script>
+
+</body>
+</html>
