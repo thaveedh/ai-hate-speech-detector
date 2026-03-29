@@ -10,6 +10,17 @@
 
 ---
 
+## 📺 Project Demo
+<div align="center">
+  <a href="https://drive.google.com/file/d/1dRbjyFR2BxVKvfIrwXONOSaAvLTS2Bg-/view?usp=sharing">
+    <img src="https://img.shields.io/badge/▶_WATCH_DEMO_VIDEO-SafeSpace_AI-red?style=for-the-badge&logo=google-drive&logoColor=white" alt="SafeSpace AI Demo" width="300" height="60">
+  </a>
+  <br />
+  <p><i>Click the button above to watch the AI in action (Redirects to Google Drive)</i></p>
+</div>
+
+---
+
 ## 📝 Project Overview
 
 **SafeSpace AI** is a sophisticated, full-stack moderation engine that moves beyond simple keyword filtering to understand **Human Intent**. Built with a focus on modern web security and Indian regional languages, it identifies toxicity across English, Hindi, Tamil, and complex transliterated slangs (Hinglish/Tanglish).
