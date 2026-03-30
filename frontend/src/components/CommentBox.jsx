@@ -14,30 +14,26 @@ export default function CommentBox({ isLocked, setIsLocked, strikes, setStrikes,
   const debouncedText = useDebounce(text, 600);
   
   // FIXED: Using a standard .mp3 from a reliable source
-  const sirenUrl = "https://www.soundjay.com/mechanical/sounds/smoke-detector-1.mp3";
+  const sirenUrl = "https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg";
   const sirenRef = useRef(new Audio(sirenUrl));
 
   const playSiren = () => {
-    console.log("SIREN TRIGGERED - ATTEMPTING PLAYBACK");
-    const audio = sirenRef.current;
-    
-    // Ensure volume is up and reset track
-    audio.volume = 1.0;
-    audio.currentTime = 0;
+  const audio = sirenRef.current;
+  audio.currentTime = 0; // Reset to start
+  audio.volume = 1.0;
 
-    audio.play()
-      .then(() => {
-        console.log("Siren playing successfully!");
-        // Stop after 5 seconds exactly
-        setTimeout(() => {
-          audio.pause();
-          audio.currentTime = 0;
-        }, 5000);
-      })
-      .catch(error => {
-        console.error("Audio playback failed:", error);
-      });
-  };
+  audio.play()
+    .then(() => {
+      console.log("🚨 Siren sounding!");
+      // Stop exactly after 5 seconds
+      setTimeout(() => {
+        audio.pause();
+      }, 5000);
+    })
+    .catch(error => {
+      console.error("Autoplay blocked. User must click the page first.", error);
+    });
+};
 
   useEffect(() => {
     if (debouncedText.trim().length > 2 && !isLocked) {
@@ -78,19 +74,22 @@ export default function CommentBox({ isLocked, setIsLocked, strikes, setStrikes,
 
   return (
     <div 
-      className={`glass p-10 border-2 rounded-[2.5rem] transition-all duration-700 shadow-2xl ${
-        isLocked ? 'border-red-600 bg-red-900/20' : 'border-slate-800 bg-black/20'
-      }`}
-      onClick={() => {
-        // WARM UP: Plays silent audio to 'unlock' audio context on the first click
-        const audio = sirenRef.current;
-        audio.volume = 0;
-        audio.play().then(() => {
-            audio.pause();
-            console.log("Audio Context Unlocked");
-        }).catch(() => {});
-      }}
-    >
+  className={`glass p-10 border-2 rounded-[2.5rem] transition-all duration-700 shadow-2xl ${
+    isLocked ? 'border-red-600 bg-red-900/20' : 'border-slate-800 bg-black/20'
+  }`}
+  onClick={() => {
+    // THIS UNLOCKS AUDIO CONTEXT FOR THE SESSION
+    const audio = sirenRef.current;
+    if (audio.paused) {
+      audio.volume = 0; // Silent
+      audio.play().then(() => {
+        audio.pause();
+        audio.volume = 1.0; // Reset volume for actual alerts
+        console.log("Audio Context Unlocked");
+      }).catch(() => {});
+    }
+  }}
+>
       <div className="flex justify-between items-center mb-8">
         <h3 className={`text-3xl font-black italic tracking-tighter uppercase transition-colors ${isLocked ? 'text-red-500' : 'text-white'}`}>
           AI MODERATOR
